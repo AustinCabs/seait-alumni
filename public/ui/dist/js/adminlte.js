@@ -1834,9 +1834,9 @@
         if ($preloader) {
           $preloader.css('height', 0);
           $(window).on('load', function () {
-            $preloader.children().hide();
-            // setTimeout(function () {
-            // }, 200);
+            setTimeout(function () {
+              $preloader.children().hide();
+            }, 4000);
           })
         
         }
