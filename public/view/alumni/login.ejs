@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in </title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../ui/plugins/fontawesome-free/css/all.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="../../ui/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../ui/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+
+
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="../img/logo.png" alt="seait" height="60" width="60">
+        <h5>Setting up things for you ...</h5>
+      </div>
+  <!-- /.login-logo -->
+ 
+  <div class="card card-outline card-teal">
+      <div class="card-header text-center">
+        <div class="row d-flex justify-content-center">
+            <img src="../img/logo.png" class=""  alt="...">
+        </div>
+        <a href="../ui/index2.html" class="h1">Alumni Monitoring System</a>
+        <div class="row">
+        </div>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">Welcome Alumni's <i class="fas fa-graduation-cap text-success"></i></p>
+
+      <form action="../ui/index3.html" method="post">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="User">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <!-- /.col -->
+          <div class="col-12">
+            <button type="submit" style="background-color:#20c997;border-color:#20c997;" class="btn btn-teal text-light btn-block"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            <button data-backdrop="static" data-keyboard="false"  data-toggle="modal" data-target="#modal-register"  type="button" class="btn btn-dark btn-block"> <i class="fas fa-pencil-alt"></i> Register</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+
+
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<div class="modal fade" id="modal-register">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+            <div class="modal-header">
+          <h4 class="modal-title">Registration</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="form-group">
+            <label for="">User Account</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password">
+          </div>
+
+          <div class="form-group">
+            <label for="">User Info</label>
+            <input type="text" class="form-control" placeholder="First name" name="" id="">
+          </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Middle name" name="" id="">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Last name" name="" id="">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="" placeholder="Birthdate" id=""
+              onfocus="(this.type='date')"
+              onblur="(this.type='text')">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Phone number" name="" id="">
+            </div>
+            <div class="form-group">
+              <select class="form-control" name="" id="">
+                <option value="">Year Graduated</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select class="form-control" name="" id="">
+                <option value="">Course</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select class="form-control" name="" id="">
+                <option value="">Job Status</option>
+                <option value="Employed">Employed</option>
+                <option value="Unenployed">Unenployed</option>
+              </select>
+            </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary"><i class="fas fa-save"></i> Submit</button>
+          </div>
+        </div>
+          <!-- <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div> -->
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+<!-- jQuery -->
+<script src="../../ui/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../ui/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../ui/dist/js/adminlte.min.js"></script>
+<script>
+
+  setSelections()
+
+   async function setSelections(){
+
+  };
+</script>
+</body>
+</html>

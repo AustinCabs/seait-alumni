@@ -4,8 +4,10 @@ const app = express();
 const port = 5020;
 
 const { Sequelize  } = require('sequelize');
-
-const sequelize = new Sequelize(process.env.DB, process.env.USER, process.env.PASS, {
+const db = process.env.ENV != "dev" ? process.env.P_DB : process.env.DB; 
+const user = process.env.ENV != "dev" ? process.env.P_USER : process.env.USER; 
+const pass = process.env.ENV != "dev" ? process.env.P_PASS : process.env.PASS; 
+const sequelize = new Sequelize(db, user, pass, {
     host: 'localhost',
     dialect: 'mysql'
   });
@@ -20,6 +22,7 @@ app.set('view engine', 'ejs');
 const home  = require('./routes/index.js');
 
 app.use('/',home);
+
 
 async function check_db() {
   try {

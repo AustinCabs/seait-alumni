@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAIT AMS</title>
+
+  <%- include('../sub/head.ejs') %>
+<!-- header -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <h2 class="text-center ">Year books</h2>
+            <form action="enhanced-results.html">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    <select class="select2" placeholder="type ..." style="width: 100%;">
+                                        <option></option>
+                                        <option>Images</option>
+                                        <option>Video</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Course</label>
+                                    <select class="select2"  style="width: 100%;">
+                                        <option></option>
+                                        <option>Images</option>
+                                        <option>Video</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                     
+                    </div>
+                </div>
+            </form>
+
+            <div class=" row col-12">
+          
+
+                  <div class="card ml-3" style="">
+                    <img class="mx-auto pt-1" src="../../img/book.png" width="200" height="200" alt="seait">
+                    <div class="card-body text-center">
+                      <h4 class=" mx-auto">Class of 2015</h4>
+                      <h5 class=" mx-auto">Bachelor of Science in Information Technology</h5>
+                      <a href="/yearbook-detail?year=&course=" class="stretched-link"></a>
+                    </div>
+                  </div>
+                  <div class="card ml-3" style="">
+                    <img class="mx-auto pt-1" src="../../img/book.png" width="200" height="200" alt="seait">
+                    <div class="card-body text-center">
+                      <h4 class=" mx-auto">Class of 2016</h4>
+                      <h5 class=" mx-auto">Bachelor of Science Business Administration major in Marketing Management</h5>
+                      <a href="/yearbook-detail?year=&course=" class="stretched-link"></a>
+                    </div>
+                  </div>
+                  <div class="card ml-3" style="">
+                    <img class="mx-auto pt-1" src="../../img/book.png" width="200" height="200" alt="seait">
+                    <div class="card-body text-center">
+                      <h4 class=" mx-auto">Class of 2017</h4>
+                      <h5 class=" mx-auto">Bachelor of Science in Criminology</h5>
+                      <a href="/yearbook-detail?year=&course=" class="stretched-link"></a>
+                    </div>
+                  </div>
+
+                 
+              
+            </div>
+        </div>
+    </section>
+  </div>
+<!-- footer -->
+<%- include('../sub/foot.ejs') %>
+<!-- codde -->
+
+</body>
+</html>
