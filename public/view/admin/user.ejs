@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAIT AMS</title>
+
+  <%- include('../sub/head-admin.ejs') %>
+<!-- header -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="../img/logo.png" alt="seait" height="60" width="60">
+      <h5>Setting up things for you ...</h5>
+    </div>
+    
+            <h2 class="text-center ">Users</h2>
+         
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">List of Aluminis </h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Age</th>
+                        <th>Birthdate</th>
+                        <th>Gender</th>
+                        <th>Course</th>
+                        <th>Graduated</th>
+                        <th>Status</th>
+                        <th>Username</th>
+                        <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+
+                        <% data.forEach(function(e) { %>
+                          <tr>
+                            <td><%= e.name %></td>
+                            <td><%= e.email %></td>
+                            <td><%= e.phone_num %></td>
+                            <td><%= e.age %></td>
+                            <td><%= e.bday %></td>
+                            <td><%= e.gender %></td>
+                            <td><%= e.course_name %></td>
+                            <td><%= e.year_graduated %></td>
+
+                            <%if(e.job_status == "Employed"){%>
+                            <td>
+                              <span class="right badge badge-success"><%= e.job_status %></span>
+                            </td>
+                            <%} else {%>
+                            <td>
+                              <span class="right badge badge-danger"><%= e.job_status %></span>
+                            </td>
+                            <%}%>
+
+                            <td><%= e.username %></td>
+                            <td>
+                              <a href="" class="text-info"><i class="fas fa-pencil-alt"></i></a>
+                              <a href="" class="text-danger"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                          </tr>
+                        <% }); %>
+                     
+                      
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+              </div>
+            </div>
+
+         
+        </div>
+    </section>
+  </div>
+<!-- footer -->
+<%- include('../sub/foot-admin.ejs') %>
+<!-- codde -->
+<script>
+   $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+</script>
+</body>
+</html>

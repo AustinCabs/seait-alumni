@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../ui/plugins/fontawesome-free/css/all.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="../../ui/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+  <link rel="stylesheet" href="../../ui/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../ui/dist/css/adminlte.min.css">
 </head>
@@ -37,17 +37,17 @@
     <div class="card-body">
       <p class="login-box-msg">Welcome Alumni's <i class="fas fa-graduation-cap text-success"></i></p>
 
-      <form action="../ui/index3.html" method="post">
+      <form id="login">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="User">
+          <input type="text" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-user"></span>
+              <span class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -58,8 +58,9 @@
 
           <!-- /.col -->
           <div class="col-12">
-            <!-- <button type="submit" style="background-color:#20c997;border-color:#20c997;" class="btn btn-teal text-light btn-block"><i class="fas fa-sign-in-alt"></i> Sign In</button> -->
-            <a href="https://alumni.austin.southcotabato.gov.ph/yearbook" style="background-color:#20c997;border-color:#20c997;" class="btn btn-teal text-light btn-block"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+            <button type="submit" style="background-color:#20c997;border-color:#20c997;" class="btn btn-teal text-light btn-block"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            <!-- <a href="" style="background-color:#20c997;border-color:#20c997;" class="btn btn-teal text-light btn-block"><i class="fas fa-sign-in-alt"></i> Sign In</a> -->
+            <!-- <a href="" style="background-color:#20c997;border-color:#20c997;" class="btn btn-teal text-light btn-block"><i class="fas fa-sign-in-alt"></i> Sign In</a> -->
             <button data-backdrop="static" data-keyboard="false"  data-toggle="modal" data-target="#modal-register"  type="button" class="btn btn-dark btn-block"> <i class="fas fa-pencil-alt"></i> Register</button>
           </div>
           <!-- /.col -->
@@ -85,53 +86,70 @@
           </button>
         </div>
         <div class="modal-body">
-          
+          <form action="" id="register">
+
           <div class="form-group">
             <label for="">User Account</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            <input type="email" required name="email_register" class="form-control" id="" placeholder="Enter email">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password">
+            <input type="password" required name="password" class="form-control" id="" placeholder="Enter password">
           </div>
 
           <div class="form-group">
             <label for="">User Info</label>
-            <input type="text" class="form-control" placeholder="First name" name="" id="">
+            <input type="text" required class="form-control" name="fname" placeholder="First name" id="">
           </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Middle name" name="" id="">
+              <input type="text" class="form-control" name="mname" placeholder="Middle name"  id="">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Last name" name="" id="">
+              <input type="text" required class="form-control" placeholder="Last name" name="lname" id="">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" name="" placeholder="Birthdate" id=""
+              <input type="text" required class="form-control" name="bday" placeholder="Birthdate" id=""
               onfocus="(this.type='date')"
               onblur="(this.type='text')">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Phone number" name="" id="">
+              <input type="number" required class="form-control" placeholder="Phone number" name="phone" id="">
             </div>
             <div class="form-group">
-              <select class="form-control" name="" id="">
+              <select required class="form-control" name="year" id="">
                 <option value="">Year Graduated</option>
+                <% years.forEach(function(e) { %>
+                  <option value="<%= e %>"><%= e %></option>
+                <% }); %>
               </select>
             </div>
             <div class="form-group">
-              <select class="form-control" name="" id="">
+              <select required class="form-control" name="gender" id="">
+                <option value="">Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select required class="form-control" name="course" id="">
                 <option value="">Course</option>
+                <% courses.forEach(function(e) { %>
+                  <option value="<%= e.course_id %>"><%= e.course_name %></option>
+                <% }); %>
+
               </select>
             </div>
             <div class="form-group">
-              <select class="form-control" name="" id="">
+              <select required class="form-control" name="job_status" id="">
                 <option value="">Job Status</option>
                 <option value="Employed">Employed</option>
-                <option value="Unenployed">Unenployed</option>
+                <option value="Unemployed">Unemployed</option>
               </select>
             </div>
 
           <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-primary"><i class="fas fa-save"></i> Submit</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Submit</button>
+          </form>
+          
           </div>
         </div>
           <!-- <div class="modal-footer justify-content-between">
@@ -147,15 +165,106 @@
 <script src="../../ui/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../ui/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="../../ui/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../ui/dist/js/adminlte.min.js"></script>
 <script>
+      var Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 5000
+    });
 
-  setSelections()
+    $("#login").submit(function (e) { 
+      e.preventDefault();
+      
+      const data = Object.fromEntries(new FormData(e.target).entries());
+        if (data.email && data.password) {
+          $.ajax({
+            type: "POST",
+            url: "/verify",
+           //  data: form.serialize(),
+            data: data,
+            dataType: "json",
+            success: function (res) {
+              console.log(res)
+             if (!res.success) {
+              Toast.fire({  
+                  icon: 'error',
+                  title: res.message
+                })
+             }else{
+                location.href = res.url
+             }
 
-   async function setSelections(){
+            }//res
+          });
 
-  };
+        } else {
+          Toast.fire({
+                  icon: 'error',
+                  title: "Empty login fields"
+                })
+        }    
+       
+    });
+
+  $("#register").submit(function (e) { 
+    e.preventDefault();
+    // let form = $(this);
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    console.log(data);
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      // denyButtonText: `Don't save`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+          
+           $.ajax({
+             type: "POST",
+             url: "/register",
+            //  data: form.serialize(),
+             data: data,
+             dataType: "json",
+             success: function (res) {
+
+              if (res.success) {
+                console.log(res);
+               document.getElementById("register").reset();
+               $('#modal-register').modal("toggle")
+               Toast.fire({
+                   icon: 'success',
+                   title: 'Successfully registered'
+                 })
+              } else {
+                Toast.fire({
+                   icon: 'error',
+                   title: 'Something went wrong'
+                 })
+              }
+            
+
+             }//res
+           });
+         
+       
+       
+          } 
+      //   else if (result.isDenied) {
+        
+      //     Toast.fire({
+      //       icon: 'error',
+      //       title: 'Something went wrong'
+      //     })
+      // }
+      })//Swal
+
+  });
 </script>
 </body>
 </html>
