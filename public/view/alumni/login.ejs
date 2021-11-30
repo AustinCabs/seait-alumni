@@ -112,7 +112,7 @@
               onblur="(this.type='text')">
             </div>
             <div class="form-group">
-              <input type="number" required class="form-control" placeholder="Phone number" name="phone" id="">
+              <input type="number"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==11) return false;" required class="form-control" placeholder="Phone number" name="phone" id="" >
             </div>
             <div class="form-group">
               <select required class="form-control" name="year" id="">
