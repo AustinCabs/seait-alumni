@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAIT AMS</title>
+
+  <%- include('../sub/head-admin.ejs') %>
+<!-- header -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="../img/logo.png" alt="seait" height="60" width="60">
+      <h5>Setting up things for you ...</h5>
+    </div>
+    
+            <h2 class="text-center ">Messages</h2>
+         
+            <div class="row">
+
+              <div class="col-12">
+                <!-- DIRECT CHAT SUCCESS -->
+                <div class="card card-success card-outline direct-chat direct-chat-success">
+                  <div class="card-header">
+                    <h3 class="card-title">Direct Feedback</h3>
+    
+                    <div class="card-tools">
+                   
+                      <button type="button" class="btn btn-tool" id="refresh">
+                        <i class="fas fa-sync-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages" style="height: 420px;">
+                      <!-- Message. Default to the left -->
+
+                      <%  data.forEach(function(e) { %>
+                        
+                        <%if (e.from != 1){ %>
+                          <div class="direct-chat-msg" >
+                            <div class="direct-chat-infos clearfix">
+                              <span class="direct-chat-name float-left"><%= e.fname.toUpperCase() %> <%= e.lname.toUpperCase() %></span>
+                              <span class="direct-chat-timestamp float-right"><%= e.date_posted %></span>
+                            </div>
+                            <!-- /.direct-chat-infos -->
+                            <img class="direct-chat-img" src="https://ui-avatars.com/api/?background=e67e22&color=ffff&name=<%= e.fname.toUpperCase() %> <%= e.lname.toUpperCase() %>&rounded=true" alt="Message User Image">
+                            <!-- /.direct-chat-img -->
+                            <div class="direct-chat-text">
+                              <%= e.message %>
+                            </div>
+                            <!-- /.direct-chat-text -->
+                          </div>
+                          <!-- /.direct-chat-msg -->
+                        <%} else{ %>
+
+                                   <!-- Message to the right -->
+                          <div class="direct-chat-msg right" >
+                            <div class="direct-chat-infos clearfix">
+                              <span class="direct-chat-name float-right"><%= e.fname.toUpperCase() %></span>
+                              <span class="direct-chat-timestamp float-left"><%= e.date_posted %></span>
+                            </div>
+                            <!-- /.direct-chat-infos -->
+                            <img class="direct-chat-img" src="https://ui-avatars.com/api/?background=0D8ABC&color=ffff&name=<%= e.fname.toUpperCase() %> <%= e.lname.toUpperCase() %>&rounded=true" alt="Message User Image">
+                            <!-- /.direct-chat-img -->
+                            <div class="direct-chat-text">
+                              <%= e.message %>
+                            </div>
+                            <!-- /.direct-chat-text -->
+                          </div>
+
+                        <%}  %>
+
+                      <% });  %>
+               
+    
+             
+               
+            
+
+                    </div>
+                    <!--/.direct-chat-messages-->
+    
+                    <!-- Contacts are loaded here -->
+                  
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <form id="send">
+                      <div class="input-group">
+                        <input type="text" name="message" required placeholder="Type Message ..." class="form-control">
+                        <span class="input-group-append">
+                           <input type="hidden" name="to_id" value="<%= from %>" >
+                          <button type="submit" class="btn btn-success">Send</button>
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- /.card-footer-->
+                </div>
+                <!--/.direct-chat -->
+              </div>
+
+            </div>
+
+         
+        </div>
+    </section>
+  </div>
+<!-- footer -->
+
+
+<%- include('../sub/foot-admin.ejs') %>
+<!-- codde -->
+<script>
+  $(document).ready(function () {
+    //scroll down
+    $(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
+
+  });
+
+  // const data = Object.fromEntries(new FormData(e.target).entries());
+  // console.log(data)
+  
+  $("#send").submit(function (e) { 
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target).entries());
+  // console.log(data)
+      $.ajax({
+        type: "POST",
+        url: "/admin-message",
+        data: data,
+        dataType: "json",
+        success: function (res) {
+          if (res.success) {
+            $('input[name="message"]').val("");
+            $(".direct-chat-messages").html(res.data);
+            $(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
+          }
+        }
+      });
+
+  });
+
+  $("#refresh").click(function (e) { 
+    e.preventDefault();
+    $.ajax({
+        type: "GET",
+        url: "/admin-message-load/" + $('input[name="to_id"]').val(),
+        
+        dataType: "json",
+        success: function (res) {
+          if (res.success) {
+            $('input[name="message"]').val("");
+            $(".direct-chat-messages").html(res.data);
+            $(".direct-chat-messages").scrollTop($(".direct-chat-messages")[0].scrollHeight);
+          }
+        }
+      });
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAIT AMS</title>
+
+  <%- include('../sub/head-admin.ejs') %>
+<!-- header -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="../img/logo.png" alt="seait" height="60" width="60">
+        <h5>Setting up things for you ...</h5>
+      </div>
+            <h2 class="text-center ">Class of <%= year %></h2>
+            <h3 class="text-center "><%=course %></h3>
+            <form action="enhanced-results.html">
+             
+            </form>
+
+            <div class=" row ">
+
+              
+              <% pic.forEach(function(e) { %>
+                <div class="col-6">
+                  <div class="card flex-fill " >
+                    <img class="mx-auto pt-1" style="width:150px;height:250px;" src="/yearbook-img/<%= e.pic_path %>"   alt="seait">
+                  </div>
+                    <p class="text-center"><%= e.fullname %></p>
+              </div>
+              <% }); %>
+                <!-- <div class="col-6">
+                    <div class="card flex-fill " style="">
+                      <img class="mx-auto pt-1" style="width:180px;height:250px;" src="../../img/cover-sample.jpg"   alt="seait">
+                    </div>
+                </div> -->
+
+                 
+              
+            </div>
+        </div>
+    </section>
+  </div>
+<!-- footer -->
+<%- include('../sub/foot-admin.ejs') %>
+<!-- codde -->
+
+</body>
+</html>

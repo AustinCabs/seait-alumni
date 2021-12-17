@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAIT AMS</title>
+
+  <%- include('../sub/head-admin.ejs') %>
+<!-- header -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="../img/logo.png" alt="seait" height="60" width="60">
+      <h5>Setting up things for you ...</h5>
+    </div>
+    
+            <h2 class="text-center ">Jobs Available</h2>
+         
+            <div class="row">
+              <div class="col-12">
+
+                <div id="accordion">
+                  <% job.forEach(function(e) { %>
+                    <div class="card card-outline card-success">
+                      <div class="card-header">
+                        <h4 class="card-title w-100">
+                          <a class="d-block w-100 collapsed text-dark" data-toggle="collapse" href="#collapseOne<%= e.job_id %>" aria-expanded="false">
+                           <h5>  <strong><%= e.title %></strong>
+                           </h5>
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapseOne<%= e.job_id %>" class="collapse" data-parent="#accordion" style="">
+                        <div class="card-body">
+                          <label>Job Description</label>
+                          <h5><%= e.job_desc %></h5> 
+                          <label>Contact Details</label> 
+                          <h5><%= e.contact %></h5> 
+                          <label>Posted on :</label>
+                           <h6><%= e.created_at %></h6> 
+                        </div>
+                      </div>
+                    </div>
+                  <% }); %>
+
+                </div>
+                <!-- accoridion -->
+
+
+
+              </div>
+            </div>
+
+         
+        </div>
+    </section>
+  </div>
+<!-- footer -->
+
+<div class="modal fade" id="modal-add">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+          <div class="modal-header">
+        <h4 class="modal-title">Add yearbook</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        
+        </div>
+      </div>
+        <!-- <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> -->
+    </div>
+    <!-- /.modal-content -->
+  </div>
+
+
+
+<%- include('../sub/foot-admin.ejs') %>
+<!-- codde -->
+<script>
+
+   $("#btn_add").click(function (e) { 
+     e.preventDefault();
+     $('#modal-add').modal("toggle")
+   });
+
+
+   $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+
+    var user_id ;
+
+    $(document).on('click', 'a.update', function (e) {
+      e.preventDefault();
+      let id = $(this).siblings('#id').val();
+      // alert(`update : ${id}`) 
+       console.log(`update : ${id}`);
+
+      $.getJSON(`/users/${id}`,
+        function (d, textStatus, jqXHR) {
+          $('input[name="user_id"]').val(d.alumni_id);
+          $('input[name="fname"]').val(d.fname);
+          $('input[name="mname"]').val(d.mname);
+          $('input[name="lname"]').val(d.lname);
+          $('input[name="bday"]').val(d.bday);
+          $('input[name="phone"]').val(d.phone_num);
+          $('select[name="year"]').val(d.year_graduated);
+          $('select[name="course"]').val(d.course_id);
+          $('select[name="gender"]').val(d.gender);
+          $('select[name="job_status"]').val(d.job_status);
+          
+        }
+      );
+
+
+
+      $('#modal-update').modal('toggle')
+    
+    });
+
+    $("#add").submit(function (e) { 
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+       console.log(data)
+
+       Swal.fire({
+      title: 'Do you want to save the changes?',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      // denyButtonText: `Don't save`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+          
+           $.ajax({
+             type: "POST",
+             url: "/manage-yearbooks",
+            //  data: form.serialize(),
+             data: data,
+             dataType: "json",
+             success: function (res) {
+
+              if (res.success) {
+                console.log(res);
+              //  document.getElementById("register").reset();
+               $('#modal-add').modal("toggle")
+               Toast.fire({
+                   icon: 'success',
+                   title: 'Successfully save'
+                 })
+                 setTimeout(function () {
+                    location.reload(true)
+                }, 1000);
+              } else {
+                Toast.fire({
+                   icon: 'error',
+                   title: 'Something went wrong'
+                 })
+              }
+            
+
+             }//res
+           });
+         
+       
+       
+          } 
+      })//Swal
+
+    });
+
+    $(document).on('click', 'a.remove', function (e) {
+      e.preventDefault();
+      let id = $(this).siblings('#id').val();
+      // alert(`remove : ${id}`)
+
+      Swal.fire({
+      title: 'Do you want to remove?',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      // denyButtonText: `Don't save`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+          
+           $.ajax({
+             type: "DELETE",
+             url: "/users/"+ id,
+            //  data: form.serialize(),
+             dataType: "json",
+             success: function (res) {
+
+              if (res.success) {
+                console.log(res);
+              //  document.getElementById("register").reset();
+              //  $('#modal-update').modal("toggle")
+               Toast.fire({
+                   icon: 'success',
+                   title: 'Successfully removed'
+                 })
+                 setTimeout(function () {
+                    location.reload(true)
+                }, 1000);
+              } else {
+                Toast.fire({
+                   icon: 'error',
+                   title: 'Something went wrong'
+                 })
+              }
+            
+
+             }//res
+           });
+         
+       
+       
+          } 
+      })//Swal
+
+
+    });
+
+</script>
+</body>
+</html>

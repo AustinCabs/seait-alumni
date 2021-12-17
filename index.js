@@ -19,6 +19,7 @@ app.use(express.static('public'));
 app.use(cookieParser());
 // Set View's
 app.set('views', './public/view');
+// app.set('img', './public/yearbook-img');
 app.set('view engine', 'ejs');
 
 app.use(express.json());

@@ -53,8 +53,10 @@
                             <td><%= e.year_graduated %></td>
                             <td><%= e.course_name %></td>
                             <td class="text-center">
-                             
-                                <a href="/manage-yearbook-details/<%= e.yearbook_id %>"" class="text-info update"><i class="fas fa-eye"></i></a>
+                              <input id="id" name="id" type="hidden" value="<%= e.yearbook_id %>">
+                              <!-- <a href="" class="text-info update"><i class="fas fa-pencil-alt"></i></a> -->
+                              <a href="" class="text-danger remove"><i class="fas fa-trash-alt"></i></a>
+                                <a href="/manage-yearbook-detail/<%= e.yearbook_id %>" class="text-info"><i class="fas fa-eye"></i></a>
                               </td>
                               
                           </tr>
@@ -237,7 +239,7 @@
           
            $.ajax({
              type: "DELETE",
-             url: "/users/"+ id,
+             url: "/manage-yearbooks/"+ id,
             //  data: form.serialize(),
              dataType: "json",
              success: function (res) {
