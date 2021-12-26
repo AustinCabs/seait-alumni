@@ -98,6 +98,35 @@ router.get('/logout',(res,req) =>{
 });
 
  
+router.post('/device', async(req,res) =>{
+     try {
+          let q = `SELECT * FROM devices WHERE device = "${req.body.token}" `
+          const query = await sequelize.query(q, { type: QueryTypes.SELECT })
+          // console.log(query);
+          // console.log(query.length);
+
+          if (query.length == 0) {
+                let q1 = `INSERT INTO devices (device) VALUES ("${req.body.token}") `
+          const query1 = await sequelize.query(q1, { type: QueryTypes.INSERT })
+               if (query1) {
+                    res.send({success:true});   
+               }else{
+                    res.send({success:false});   
+               }
+          }else{
+               res.send({success:true});   
+          }
+
+         
+     } catch (e) {
+          // res.json({success:false});
+          res.send({success:false});   
+          console.log(e);   
+     }
+
+});
+
+ 
 
 
  module.exports = router;
