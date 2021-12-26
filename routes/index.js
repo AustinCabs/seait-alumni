@@ -3,6 +3,7 @@ const router  = express.Router();
 const db  = require('../config');
 const sequelize =  db.sequelize;
 const QueryTypes =  db.QueryTypes;
+const axios = require('axios');
 
 router.get('/',async (req,res) => {
     let data = {}
@@ -126,6 +127,45 @@ router.post('/device', async(req,res) =>{
 
 });
 
+router.get('/device', async(req,res) =>{
+     try {
+          let q = `SELECT device FROM devices `
+          const query = await sequelize.query(q, { type: QueryTypes.SELECT })
+
+          console.log(query);
+
+          let arr_token = []
+
+          query.forEach(e => {
+            arr_token.push(e.device)
+          })
+          console.log(arr_token);
+
+          const message = {
+               to: arr_token,
+               sound: 'default',
+               title: 'New Job Posted',
+               body: 'And here is the body!'
+             };
+          
+          let config = {
+               headers: {
+                    Accept: 'application/json',
+                    'Accept-encoding': 'gzip, deflate',
+                    'Content-Type': 'application/json',
+               }
+             }
+
+        let data = await  axios.post("https://exp.host/--/api/v2/push/send",JSON.stringify(message),config)
+        console.log(data);
+         
+     } catch (e) {
+          // res.json({success:false});
+          res.send({success:false});   
+          console.log(e);   
+     }
+
+});
  
 
 
