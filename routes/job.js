@@ -3,7 +3,7 @@ const router  = express.Router();
 const db  = require('../config');
 const sequelize =  db.sequelize;
 const QueryTypes =  db.QueryTypes;
-
+const axios = require('axios');
 // router.get('/job',async(req,res) =>{
 //     if (req.session.user_id != null) {
 
@@ -106,12 +106,12 @@ router.post('/manage-job',async(req,res) =>{
             }
           }
 
-     let axios_result = await  axios.post("https://exp.host/--/api/v2/push/send",JSON.stringify(message),config)
+     let axios_result = await axios.post("https://exp.host/--/api/v2/push/send",JSON.stringify(message),config)
      res.send({success:true})
        
     } catch (e) {
-       console.log(e);
        res.send({success:false})
+       console.log(e);
     }
 });
 
