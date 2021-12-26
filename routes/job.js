@@ -40,7 +40,7 @@ router.get('/manage-job',async(req,res) =>{
 router.get('/admin-job',async(req,res) =>{
     if (req.session.user_id != null) {
 
-      let sql1 = `SELECT * FROM jobs`
+      let sql1 = `SELECT *, convert_tz(created_at,'+00:00','+08:00') as posted_at FROM jobs`
       const data1 = await sequelize.query(sql1, { type: QueryTypes.SELECT });
   
         let avatar =  req.session.name
@@ -58,7 +58,7 @@ router.get('/admin-job',async(req,res) =>{
 router.get('/job',async(req,res) =>{
     if (req.session.user_id != null) {
 
-      let sql1 = `SELECT * FROM jobs`
+      let sql1 = `SELECT *,convert_tz(created_at,'+00:00','+08:00') as posted_at FROM jobs`
       const data1 = await sequelize.query(sql1, { type: QueryTypes.SELECT });
   
         let avatar =  req.session.name
