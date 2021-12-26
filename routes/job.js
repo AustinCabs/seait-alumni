@@ -95,7 +95,7 @@ router.post('/manage-job',async(req,res) =>{
             to: arr_token,
             sound: 'default',
             title: 'New Job Posted',
-            body: `${title} , view on app for more info`
+            body: `${title} job has been posted view on app for more info`
           };
        
        let config = {
