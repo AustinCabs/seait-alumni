@@ -106,7 +106,7 @@ router.post('/manage-job',async(req,res) =>{
             }
           }
 
-     let data = await  axios.post("https://exp.host/--/api/v2/push/send",JSON.stringify(message),config)
+     let axios_result = await  axios.post("https://exp.host/--/api/v2/push/send",JSON.stringify(message),config)
      res.send({success:true})
        
     } catch (e) {
