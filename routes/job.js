@@ -78,7 +78,36 @@ router.post('/manage-job',async(req,res) =>{
     try {
        let sql = `insert into jobs (title,job_desc,contact) values ("${title}","${desc}","${contact}")`
        let data = await sequelize.query(sql, { type: QueryTypes.INSERT });
-       res.send({success:true})
+
+       let q = `SELECT device FROM devices`
+       const query = await sequelize.query(q, { type: QueryTypes.SELECT })
+
+      //  console.log(query);
+
+       let arr_token = []
+
+       query.forEach(e => {
+         arr_token.push(e.device)
+       })
+      //  console.log(arr_token);
+
+       const message = {
+            to: arr_token,
+            sound: 'default',
+            title: 'New Job Posted',
+            body: `${title} , view on app for more info`
+          };
+       
+       let config = {
+            headers: {
+                 Accept: 'application/json',
+                 'Accept-encoding': 'gzip, deflate',
+                 'Content-Type': 'application/json',
+            }
+          }
+
+     let data = await  axios.post("https://exp.host/--/api/v2/push/send",JSON.stringify(message),config)
+     res.send({success:true})
        
     } catch (e) {
        console.log(e);
