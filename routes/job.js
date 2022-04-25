@@ -64,7 +64,9 @@ router.get('/job',async(req,res) =>{
         let avatar =  req.session.name
         res.render('alumni/job',{
           avatar : avatar.toUpperCase(),
-          job:data1
+          job:data1,
+          ppic : req.session.pic
+
 
         });
      } else {

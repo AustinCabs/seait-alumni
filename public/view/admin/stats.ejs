@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEAIT AMS</title>
+
+  <%- include('../sub/head-admin.ejs') %>
+<!-- header -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="../img/logo.png" alt="seait" height="60" width="60">
+      <h5>Setting up things for you ...</h5>
+    </div>
+    
+            <h2 class="text-center ">Dashboard</h2>
+         
+            <div class="row">
+              <div class="col-12">
+                <div class="wrapper">
+                  <div id="container">
+                  </div>
+                    </div>
+
+              </div>
+            </div>
+
+         
+        </div>
+    </section>
+  </div>
+<!-- footer -->
+<%- include('../sub/foot-admin.ejs') %>
+<script src="https://code.highcharts.com/highcharts.js"></script>s
+<!-- codde -->
+<script>
+
+pie()
+// $("svg text").last().text("Seait Alumni Statatics");
+function pie() {
+  
+  $.get("/stats",
+    function (data, textStatus, jqXHR) {
+    // let dataApi = [] 
+    // let stats = data.stats;
+    
+    // // stats.forEach(e => {
+    // //   dataApi.push(e)
+    // // });
+
+    // console.log(data);
+    // console.log(dataApi);
+    // return
+
+    var chart = Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  colors: ['#2ecc71', '#34495e', '#e74c3c'],
+  title: {
+    text: 'Seait Alumni Job Status Statistics '
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.y}</b>'
+  },   
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>: {point.y} '
+      }
+    }
+  },
+  series: [{
+    name: 'Total',
+    colorByPoint: true,
+    data: data
+  }]
+});
+
+
+// console.log('redraw');
+var w = $('#container').closest(".wrapper").width()
+// setsize will trigger the graph redraw 
+chart.setSize(       
+    w,w * (3/4),false
+);
+
+
+$("svg text").last().text("Seait Alumni Summary");
+
+    },
+    "json"
+  );
+
+  
+}
+
+
+
+</script>
+
+</body>
+</html>

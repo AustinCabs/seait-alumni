@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SEAIT AMS</title>
 
-  <%- include('../sub/head-admin.ejs') %>
+  <%- include('../sub/head.ejs') %>
+  <link rel="stylesheet" href="../../ui/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <!-- header -->
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -19,74 +20,11 @@
       <h5>Setting up things for you ...</h5>
     </div>
     
-            <h2 class="text-center ">Users</h2>
+     
          
             <div class="row">
               <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">List of Aluminis </h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body">
-                    <table id="example2" class="table table-bordered table-hover">
-                      <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Phone</th>
-                        <th>Age</th>
-                        <th>Birthdate</th>
-                        <th>Gender</th>
-                        <th>Course</th>
-                        <th>Graduated</th>
-                        <th>Status</th>
-                        <!-- <th>Username/Email</th> -->
-                        <th>Action</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-
-                        <% data.forEach(function(e) { %>
-                          <%if(e.username != "admin@admin") {%>
-                          <tr>
-                            <td><%= e.name %></td>
-                            <td><%= e.email %></td>
-                            <td><%= e.phone_num %></td>
-                            <td><%= e.age %></td>
-                            <td><%= e.bday %></td>
-                            <td><%= e.gender %></td>
-                            <td><%= e.course_name %></td>
-                            <td><%= e.year_graduated %></td>
-
-                            <%if(e.job_status == "Employed"){%>
-                            <td>
-                              <span class="right badge badge-success"><%= e.job_status %></span>
-                            </td>
-                            <%} else {%>
-                            <td>
-                              <span class="right badge badge-danger"><%= e.job_status %></span>
-                            </td>
-                            <%}%>
-
-                            <!-- <td><%= e.username %></td> -->
-                            <td>
-                             
-                                <input id="id" name="id" type="hidden" value="<%= e.alumni_id %>">
-                                <a href="" class="text-info update"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="" class="text-danger remove"><i class="fas fa-trash-alt"></i></a>
-                              </td>
-                              
-                          </tr>
-                          <%}%>
-                        <% }); %>
-                     
-                      
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- /.card-body -->
-                </div>
+               
               </div>
             </div>
 
@@ -106,13 +44,24 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="" id="update_user">
-
+        <form enctype="multipart/form-data" action="" id="update_user">
+          <div class="form-group">
+            <label for="">User Account</label>
+            <input type="email"  name="email_register" class="form-control" id="" disabled placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <input type="password"  name="password" class="form-control" id="" placeholder="Change password here ..">
+          </div>
+          <div class="form-group">
+            <label for="">Change picture</label>
+            <input type="file" class="" name="profile_pic">
+          </div>
           <input type="hidden" name="user_id" value="">
         <div class="form-group">
           <label for="">User Info</label>
           <input type="text" required class="form-control" name="fname" placeholder="First name" id="">
         </div>
+  
           <div class="form-group">
             <input type="text" class="form-control" name="mname" placeholder="Middle name"  id="">
           </div>
@@ -159,7 +108,7 @@
               <option value="">Job Status</option>
               <option value="Employed">Employed</option>
               <option value="Unemployed">Unemployed</option>
-              <option value="Underemployment">Underemployment</option>
+              <option value="Underemployed">Underemployed</option>
             </select>
           </div>
 
@@ -176,31 +125,24 @@
     <!-- /.modal-content -->
   </div>
 
+<input type="hidden" id="role_id" value="<%=role_id%>">
 
-
-<%- include('../sub/foot-admin.ejs') %>
+<%- include('../sub/foot.ejs') %>
+<script src="../../ui/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- codde -->
 <script>
-   $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 5000
     });
 
-    var user_id ;
-
-    $(document).on('click', 'a.update', function (e) {
-      e.preventDefault();
-      let id = $(this).siblings('#id').val();
-      // alert(`update : ${id}`) 
-       console.log(`update : ${id}`);
-
-      $.getJSON(`/users/${id}`,
+  $('#modal-update').modal('toggle')
+    
+  $.getJSON(`/users/${$("#role_id").val()}`,
         function (d, textStatus, jqXHR) {
+          $('input[name="email_register"]').val(d.username);
           $('input[name="user_id"]').val(d.alumni_id);
           $('input[name="fname"]').val(d.fname);
           $('input[name="mname"]').val(d.mname);
@@ -215,17 +157,11 @@
         }
       );
 
-
-
-      $('#modal-update').modal('toggle')
-    
-    });
-
     $("#update_user").submit(function (e) { 
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.target).entries());
        console.log(data)
-
+       let form = new FormData(this);
        Swal.fire({
       title: 'Do you want to save the changes?',
       // showDenyButton: true,
@@ -237,60 +173,13 @@
           
            $.ajax({
              type: "PUT",
-             url: "/users/"+ $('input[name="user_id"]').val(),
+             url: "/editInfo/"+ $('input[name="user_id"]').val(),
             //  data: form.serialize(),
-             data: data,
+             data: form,
              dataType: "json",
-             success: function (res) {
-
-              if (res.success) {
-                console.log(res);
-              //  document.getElementById("register").reset();
-               $('#modal-update').modal("toggle")
-               Toast.fire({
-                   icon: 'success',
-                   title: 'Successfully update'
-                 })
-                 setTimeout(function () {
-                    location.reload(true)
-                }, 1000);
-              } else {
-                Toast.fire({
-                   icon: 'error',
-                   title: 'Something went wrong'
-                 })
-              }
-            
-
-             }//res
-           });
-         
-       
-       
-          } 
-      })//Swal
-
-    });
-
-    $(document).on('click', 'a.remove', function (e) {
-      e.preventDefault();
-      let id = $(this).siblings('#id').val();
-      // alert(`remove : ${id}`)
-
-      Swal.fire({
-      title: 'Do you want to remove?',
-      // showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      // denyButtonText: `Don't save`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-          
-           $.ajax({
-             type: "DELETE",
-             url: "/users/"+ id,
-            //  data: form.serialize(),
-             dataType: "json",
+             contentType: false,
+            cache: false,
+            processData:false,
              success: function (res) {
 
               if (res.success) {
@@ -299,11 +188,11 @@
               //  $('#modal-update').modal("toggle")
                Toast.fire({
                    icon: 'success',
-                   title: 'Successfully removed'
+                   title: 'Successfully updated\n Changes will apply on re-login'
                  })
                  setTimeout(function () {
-                    location.reload(true)
-                }, 1000);
+                    location.href = "/dashboard-alumni"
+                }, 2000);
               } else {
                 Toast.fire({
                    icon: 'error',
@@ -319,7 +208,6 @@
        
           } 
       })//Swal
-
 
     });
 

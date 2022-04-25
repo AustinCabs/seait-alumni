@@ -16,7 +16,9 @@ router.get('/admin-feedback',async (req,res) =>{
           let avatar =  req.session.name
           res.render('admin/feedback',{
             avatar : avatar.toUpperCase(),
-             user: data
+             user: data,
+             ppic : req.session.pic
+
           });
        } else {
           res.redirect('/');
@@ -147,7 +149,9 @@ router.get('/feedback',async (req,res) =>{
          let avatar =  req.session.name
          res.render('alumni/feedback-message',{
            avatar : avatar.toUpperCase(),
-           data:data
+           data:data,
+           ppic : req.session.pic
+
          });
       } else {
          res.redirect('/');

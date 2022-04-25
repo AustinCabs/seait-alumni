@@ -78,6 +78,7 @@ router.get('/yearbook',async(req,res) => {
       res.render('alumni/yearbook',{
          avatar : avatar.toUpperCase(),
          courses:courses,
+         ppic : req.session.pic
          // years:years
       });
    } else {
@@ -131,7 +132,8 @@ router.get('/yearbook-detail/:id', async(req,res) => {
          avatar : avatar.toUpperCase(),
          year : desc[0].year_graduated,
          course :desc[0].course_name,
-         pic : pics
+         pic : pics,
+         ppic : req.session.pic
       });
    } else {
       res.redirect('/');
@@ -173,7 +175,9 @@ router.get('/manage-yearbook-detail/:id', async(req,res) => {
             course:data[0].course_name,
             year_graduated:data[0].year_graduated,
             id : id,
-            table : arr_data
+            table : arr_data,
+            ppic : req.session.pic
+
          });
 
       } catch (e) {

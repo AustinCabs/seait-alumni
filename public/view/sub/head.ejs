@@ -35,10 +35,15 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="https://ui-avatars.com/api/?background=0D8ABC&color=ffff&name=<%=avatar%>&rounded=true" class="  img-circle elevation-2" alt="User Image">
+          <% if (ppic != null) {%>
+            <img src="/img/<%= ppic %>" class="  img-circle elevation-2" style=" width:40px; height:40px;" alt="User Image">
+          <% }  else { %>
+            <img src="https://ui-avatars.com/api/?background=0D8ABC&color=ffff&name=<%=avatar%>&rounded=true" class="  img-circle elevation-2" alt="User Image">
+          <% } %>
         </div>
+          
         <div class="info ">
-          <a href="#" class="d-block "><%=avatar%></a>
+          <a href="/editInfo"  class="d-block "><%=avatar%></a>
         </div>
       </div>
 
@@ -50,7 +55,14 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
          
-      
+               <li class="nav-item">
+                <a href="/dashboard-alumni" class="nav-link">
+                  <i class="nav-icon fas fa-chart-line"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+              </li>
 
           <li class="nav-item">
             <a href="/yearbook" class="nav-link">

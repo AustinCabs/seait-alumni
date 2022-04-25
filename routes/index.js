@@ -4,6 +4,7 @@ const db  = require('../config');
 const sequelize =  db.sequelize;
 const QueryTypes =  db.QueryTypes;
 const axios = require('axios');
+const { Json } = require('sequelize/dist/lib/utils');
 
 router.get('/',async (req,res) => {
     let data = {}
@@ -76,11 +77,14 @@ router.get('/',async (req,res) => {
           let q1 = `select * from alumnis where alumni_id = ${query[0].alumni_id}`
           const query1 = await sequelize.query(q1, { type: QueryTypes.SELECT })
           req.session.name =  (query[0].username == "admin@admin") ? "Admin" : `${query1[0].fname} ${query1[0].lname}` 
+          req.session.pic = query1[0].profile_pic
           // console.log(req.session);
           if (req.session.role_id  == 1) {             
-               res.send({success:true,url:"/user"});   
+               // res.send({success:true,url:"/user"});   
+               res.send({success:true,url:"/dashboard"});   
           } else {
-               res.send({success:true,url:"/yearbook"});   
+               res.send({success:true,url:"/dashboard-alumni"});   
+               // res.send({success:true,url:"/yearbook"});   
           }
 
      } else {
@@ -167,6 +171,54 @@ router.get('/device', async(req,res) =>{
 
 });
  
+router.get('/dashboard',async (req,res) => {
+     res.render('admin/stats',{
+     avatar :  req.session.name
+     });
+  });
+
+  router.get('/editInfo',async (req,res) => {
+     let data = {}
+     const courses = await sequelize.query("SELECT * FROM courses ", { type: QueryTypes.SELECT });
+     
+     let year = new Date().getFullYear();
+     let arr_year = [];
+     for (let index = 2005; index < year; index++) {
+          arr_year.push(index);
+     }
+     arr_year.push(year);
+     data.courses = courses;
+     data.years = arr_year;
+     // console.log(data);
+ 
+     res.render('alumni/user-update',{
+          courses:courses,
+          years:arr_year,
+          avatar :  req.session.name,
+          role_id : req.session.user_id,
+          ppic : req.session.pic
+
+
+     });
+  
+  });
+
+router.get('/dashboard-alumni',async (req,res) => {
+     console.log(req.session.pic);
+     res.render('alumni/stats-alumni',{
+     avatar :  req.session.name,
+     ppic : req.session.pic
+     });
+  });
+
+router.get('/stats',async (req,res) => {
+     let q = `select count(1) as y , job_status as name FROM alumnis GROUP BY job_status`
+     const query = await sequelize.query(q, { type: QueryTypes.SELECT })
+
+     console.log(query);
+     res.json(query);
+  });
+
 
 
  module.exports = router;

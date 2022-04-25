@@ -3,6 +3,9 @@ const router  = express.Router();
 const db  = require('../config');
 const sequelize =  db.sequelize;
 const QueryTypes =  db.QueryTypes;
+const path = require("path")
+var multer  = require('multer')
+
 
 router.get('/user', async(req,res) =>{
     if (req.session.user_id != null) {
@@ -49,7 +52,9 @@ router.get('/user', async(req,res) =>{
 
 router.get('/users/:id', async(req,res) =>{
         try {
-            let sql = `select * from alumnis where alumni_id = ${req.params.id}`
+            let sql = `select * from alumnis a
+             inner join users u ON u.alumni_id = a.alumni_id
+            where a.alumni_id = ${req.params.id}`
             const q = await sequelize.query(sql, { type: QueryTypes.SELECT });
             console.log(q)
              
@@ -77,6 +82,61 @@ router.put('/users/:id',async(req,res) => {
 
         let sql = `update alumnis set fname="${fname}" ,mname="${mname}", lname="${lname}", bday='${bday}' ,gender="${gender}" , phone_num="${phone}", year_graduated="${year}", course_id=${course}, job_status="${job_status}" where alumni_id = ${user_id}`
         const q = await sequelize.query(sql, { type: QueryTypes.UPDATE });
+        console.log(q)
+        res.send({success:true})
+    } catch (e) {
+        console.log(e)
+        res.send({success:false,message:e})
+        
+     }
+})
+
+let  nameFile;
+const storage = multer.diskStorage({
+    destination:`./public/img`,
+    filename:(req,file,cb) => {
+        const fileName = `${Date.now()}${path.extname(file.originalname)}`;
+        nameFile = fileName;
+        cb(null,fileName)
+    }
+})
+
+const upload = multer({ storage }).single('profile_pic')
+
+router.put('/editInfo/:id',upload,async(req,res) => {
+     try {
+         let {
+            user_id,
+            fname,
+            mname,
+            lname,
+            bday,
+            phone,
+            year,
+            gender,
+            course,
+            job_status,
+            password
+            // profile_pic
+         } = req.body
+
+
+         if(!nameFile){
+             let sql1 = `SELECT * FROM alumnis WHERE alumni_id = ${user_id}`
+             const data1 = await sequelize.query(sql1, { type: QueryTypes.SELECT });
+             nameFile = data1[0].profile_pic
+             req.session.pic = nameFile
+        }
+
+        let sql = `update alumnis set profile_pic = "${nameFile}" , fname="${fname}" ,mname="${mname}", lname="${lname}", bday='${bday}' ,gender="${gender}" , phone_num="${phone}", year_graduated="${year}", course_id=${course}, job_status="${job_status}" where alumni_id = ${user_id}`
+        const q = await sequelize.query(sql, { type: QueryTypes.UPDATE });
+        req.session.name = `${fname} ${lname}`
+        if (password) {
+            let sql1 = `update users set password = "${password}" where  alumni_id = ${user_id}`
+            const q1 = await sequelize.query(sql1, { type: QueryTypes.UPDATE });
+            console.log(q1)
+        }
+
         console.log(q)
         res.send({success:true})
     } catch (e) {
