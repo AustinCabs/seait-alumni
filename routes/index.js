@@ -214,9 +214,27 @@ router.get('/dashboard-alumni',async (req,res) => {
 router.get('/stats',async (req,res) => {
      let q = `select count(1) as y , job_status as name FROM alumnis GROUP BY job_status`
      const query = await sequelize.query(q, { type: QueryTypes.SELECT })
+     let q1 = `SELECT COUNT(0) as total , year_graduated as year  FROM alumnis GROUP BY year_graduated`
+     const query1 = await sequelize.query(q1, { type: QueryTypes.SELECT })
 
      console.log(query);
-     res.json(query);
+     console.log(query1);
+     
+     let total = []
+     let year = [] 
+
+     query1.forEach(e => {
+          total.push(e.total)
+          year.push(e.year)
+     });
+
+     res.json({
+          stats1 : query,
+          stats2 : {
+               'total' :total,
+               'year' : year
+          }
+     });
   });
 
 

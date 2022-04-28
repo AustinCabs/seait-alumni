@@ -31,12 +31,22 @@
               </div>
             </div>
 
+            <div class="row mt-3">
+              <div class="col-12">
+                <div class="wrapper">
+                  <div id="container1">
+                  </div>
+                    </div>
+
+              </div>
+            </div>
+
          
         </div>
     </section>
   </div>
 <!-- footer -->
-<%- include('../sub/foot.ejs') %>
+<%- include('../sub/foot-admin.ejs') %>
 <script src="https://code.highcharts.com/highcharts.js"></script>s
 <!-- codde -->
 <script>
@@ -85,10 +95,59 @@ function pie() {
   series: [{
     name: 'Total',
     colorByPoint: true,
-    data: data
+    data: data.stats1
   }]
 });
 
+$("svg text").last().text("Seait Alumni Summary");
+
+Highcharts.chart('container1', {
+  chart: {
+    type: 'spline'
+  },
+  title: {
+    text: 'Seait Yearly Graduate Statistics'
+  },
+  // subtitle: {
+  //   text: 'Source: WorldClimate.com'
+  // }
+  // ,
+  xAxis: {
+    categories: data.stats2.year
+  },
+  yAxis: {
+    title: {
+      text: 'Total'
+    },
+    allowDecimals: false,
+    labels: {
+      formatter: function () {
+        return this.value + '';
+      }
+    }
+  },
+  tooltip: {
+    crosshairs: true,
+    shared: true
+  },
+  plotOptions: {
+    spline: {
+      marker: {
+        radius: 4,
+        lineColor: '#666666',
+        lineWidth: 1
+      }
+    }
+  },
+  series: [{
+    name: 'Total',
+    marker: {
+      symbol: 'square'
+    },
+    data: data.stats2.total
+
+  }]
+});
 
 // console.log('redraw');
 var w = $('#container').closest(".wrapper").width()

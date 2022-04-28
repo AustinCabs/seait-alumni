@@ -76,9 +76,9 @@ router.get('/job',async(req,res) =>{
 });
 
 router.post('/manage-job',async(req,res) =>{
-    let  {title,desc,contact} = req.body;
+    let  {title,desc,contact,company} = req.body;
     try {
-       let sql = `insert into jobs (title,job_desc,contact) values ("${title}","${desc}","${contact}")`
+       let sql = `insert into jobs (title,company,job_desc,contact) values ("${title}","${company}","${desc}","${contact}")`
        let data = await sequelize.query(sql, { type: QueryTypes.INSERT });
 
        let q = `SELECT device FROM devices`
