@@ -34,14 +34,17 @@
   </div>
 <!-- footer -->
 
-<div class="modal fade" id="modal-update">
+<div class="modal fade" id="modal-update"  data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
           <div class="modal-header">
         <h4 class="modal-title">Update user</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
+        <a href="/dashboard-alumni">
+          <span aria-hidden="true">&times;</span>
+        </a>
       </div>
       <div class="modal-body">
         <form enctype="multipart/form-data" action="" id="update_user">
@@ -80,7 +83,7 @@
             <input type="email" max="11" required class="form-control" placeholder="email" name="phone" id="">
           </div> -->
           <div class="form-group">
-            <select required class="form-control" name="year" id="">
+            <select required class="form-control " disabled name="year"  id="">
               <option value="">Year Graduated</option>
               <% years.forEach(function(e) { %>
                 <option value="<%= e %>"><%= e %></option>
@@ -95,7 +98,7 @@
             </select>
           </div>
           <div class="form-group">
-            <select required class="form-control" name="course" id="">
+            <select required class="form-control " disabled name="course"  id="">
               <option value="">Course</option>
               <% courses.forEach(function(e) { %>
                 <option value="<%= e.course_id %>"><%= e.course_name %></option>
@@ -112,8 +115,46 @@
             </select>
           </div>
 
+          <div class="form-group">
+            <label for="" id="yearbookLabel"><%= yearbookLabel %></label> <br>
+            <!-- <input type="file" class="" name="yearbook_pic"> -->
+            <button id="addYearbook" type="button" class="btn btn-secondary"><i class="fas fa-user"></i> </button>
+            
+          </div>
+
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Submit</button>
+        </form>
+        
+        </div>
+      </div>
+        <!-- <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> -->
+    </div>
+    <!-- /.modal-content -->
+  </div>
+
+  
+<div class="modal fade" id="modal-yearbookPic"  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+          <div class="modal-header">
+        <h4 class="modal-title"  id="titleYearbook"></h4>
+        <button type="button" class="close" id="modal-yearbookPic_close" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form enctype="multipart/form-data" action="" id="form_yearbook_pic">
+     
+          <div class="form-group">
+            <input type="file" class="" name="yearbook_pic">
+            
+          </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Yearbook Picture</button>
         </form>
         
         </div>
@@ -139,6 +180,77 @@
     });
 
   $('#modal-update').modal('toggle')
+
+  $("#modal-yearbookPic_close").click(function (e) { 
+    e.preventDefault();
+    window.location.reload();
+    // $('#modal-yearbookPic').modal('hide')
+    // $('#modal-update').modal('show')
+  });
+
+  $("#addYearbook").click(function (e) { 
+    e.preventDefault();
+    $("#titleYearbook").html($("#yearbookLabel").html());
+    // $('#modal-update').modal('toggle')
+    // $('#modal-update').modal('hide')
+    $('#modal-yearbookPic').modal('toggle')
+
+  });
+
+  $("#form_yearbook_pic").submit(function (e) { 
+    e.preventDefault();
+    // console.log("log");
+    const data = Object.fromEntries(new FormData(e.target).entries());
+      //  console.log(data)
+       let form = new FormData(this);
+       Swal.fire({
+      title: 'Sure want to save yearbook picture?',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      // denyButtonText: `Don't save`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+          
+           $.ajax({
+             type: "PUT",
+             url: "/yearbookpic/"+ $('input[name="user_id"]').val(),
+            //  data: form.serialize(),
+             data: form,
+             dataType: "json",
+             contentType: false,
+            cache: false,
+            processData:false,
+             success: function (res) {
+
+              if (res.success) {
+                console.log(res);
+              //  document.getElementById("register").reset();
+              //  $('#modal-update').modal("toggle")
+               Toast.fire({
+                   icon: 'success',
+                   title: 'Yearbook picture saved'
+                 })
+                 setTimeout(function () {
+                  window.location.reload();
+                }, 2000);
+              } else {
+                Toast.fire({
+                   icon: 'error',
+                   title: 'Something went wrong'
+                 })
+              }
+            
+
+             }//res
+           });
+         
+       
+       
+          } 
+      })//Swal
+
+  });
     
   $.getJSON(`/users/${$("#role_id").val()}`,
         function (d, textStatus, jqXHR) {
@@ -162,6 +274,8 @@
       const data = Object.fromEntries(new FormData(e.target).entries());
        console.log(data)
        let form = new FormData(this);
+       form.append('course',$('select[name="course"]').val());
+       form.append('year',$('select[name="year"]').val());
        Swal.fire({
       title: 'Do you want to save the changes?',
       // showDenyButton: true,

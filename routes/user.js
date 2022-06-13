@@ -72,12 +72,7 @@ router.put('/users/:id',async(req,res) => {
             fname,
             mname,
             lname,
-            bday,
-            phone,
-            year,
-            gender,
-            course,
-            job_status
+            bday,  
          } = req.body
 
         let sql = `update alumnis set fname="${fname}" ,mname="${mname}", lname="${lname}", bday='${bday}' ,gender="${gender}" , phone_num="${phone}", year_graduated="${year}", course_id=${course}, job_status="${job_status}" where alumni_id = ${user_id}`
@@ -101,7 +96,58 @@ const storage = multer.diskStorage({
     }
 })
 
+
 const upload = multer({ storage }).single('profile_pic')
+const upload2 = multer({ storage }).single('yearbook_pic')
+
+router.put('/yearbookpic/:id',upload2,async(req,res) => {
+    try {
+        
+        let sql = `select * from alumnis 
+        where alumni_id = ${req.params.id}`
+        const q = await sequelize.query(sql, { type: QueryTypes.SELECT });
+        console.log(q[0]);
+        let mname  =  q[0].mname != "" ? q[0].mname.substring(0,1).toUpperCase() + "." : "" 
+
+        const yearbookPicExist = await sequelize.query(`SELECT count(*) as count from yearbook_pics where created_by = ${req.session.alumni_id}`, { type: QueryTypes.SELECT });
+        // console.log(yearbookPicExist[0].count);
+        if (yearbookPicExist[0].count >= 1) {
+            const yearbookPicUpdate = await sequelize.query(`update yearbook_pics SET pic_path='${nameFile}' where created_by = ${req.session.alumni_id}`, { type: QueryTypes.UPDATE });
+            console.log(yearbookPicUpdate);
+            const yearbookPicNameUpdate = await sequelize.query(`update yearbook_pics SET fullname='${q[0].fname} ${mname} ${q[0].lname}' where created_by = ${req.session.alumni_id}`, { type: QueryTypes.UPDATE });
+            console.log(yearbookPicNameUpdate);
+
+        }else{
+            
+            const checkYearbooks = await sequelize.query(`select count(*) as num, yearbook_id from yearbooks where course_id = ${q[0].course_id} AND year_graduated = ${q[0].year_graduated}`, { type: QueryTypes.SELECT });
+             console.log(checkYearbooks);
+            if (checkYearbooks[0].num >= 1) {
+                const  newYearbookPic = await sequelize.query(`insert into yearbook_pics (pic_path,	yearbook_id,fullname,created_by,is_img_path) values 
+                ('${nameFile}',${checkYearbooks[0].yearbook_id},'${q[0].fname} ${mname} ${q[0].lname}',${req.params.id},1)`, { type: QueryTypes.INSERT });
+                
+            }else{
+                 const  newYearbook = await sequelize.query(`insert into yearbooks (course_id,year_graduated) values (${q[0].course_id} , ${q[0].year_graduated})`, { type: QueryTypes.INSERT });
+                 console.log(newYearbook);
+                if (newYearbook) {
+                     
+                    const  newYearbookPic = await sequelize.query(`insert into yearbook_pics (pic_path,	yearbook_id,fullname,created_by,is_img_path) values 
+                    ('${nameFile}',${newYearbook[0]},'${q[0].fname} ${manme} ${q[0].lname}',${req.params.id},1)`, { type: QueryTypes.INSERT });
+                }
+             }
+
+        }   
+        
+       // return  res.send(q[0])
+
+        
+
+       return res.send({success:true})
+
+    } catch (e) {
+        console.log(`error : ${e}`);
+    }
+    
+})
 
 router.put('/editInfo/:id',upload,async(req,res) => {
      try {

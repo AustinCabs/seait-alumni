@@ -73,11 +73,13 @@ router.get('/',async (req,res) => {
           //  res.redirect("/yearbook");
           // res.render('alumni/yearbook');
           req.session.user_id = query[0].user_id
+          req.session.alumni_id = query[0].alumni_id
           req.session.role_id =  (query[0].username == "admin@admin") ? 1 : 0;
           let q1 = `select * from alumnis where alumni_id = ${query[0].alumni_id}`
           const query1 = await sequelize.query(q1, { type: QueryTypes.SELECT })
           req.session.name =  (query[0].username == "admin@admin") ? "Admin" : `${query1[0].fname} ${query1[0].lname}` 
           req.session.pic = query1[0].profile_pic
+          // req.session.alumni = query1[0]
           // console.log(req.session);
           if (req.session.role_id  == 1) {             
                // res.send({success:true,url:"/user"});   
@@ -190,13 +192,23 @@ router.get('/dashboard',async (req,res) => {
      data.courses = courses;
      data.years = arr_year;
      // console.log(data);
+     // let userData  = req.res.alumni.alumni_id
+     // console.log(userData);
+      
+     // const yearbookPicExist = await sequelize.query(`SELECT * from yearbook_pics where created_by = 1`, { type: QueryTypes.SELECT });
+     const yearbookPicExist = await sequelize.query(`SELECT count(*) as count from yearbook_pics where created_by = ${req.session.alumni_id}`, { type: QueryTypes.SELECT });
+     console.log(yearbookPicExist[0].count);
+     let label = (yearbookPicExist[0].count >= 1) ? "Update yearbook pic" : "Add yearbook pic" 
+      
+     
  
      res.render('alumni/user-update',{
           courses:courses,
           years:arr_year,
           avatar :  req.session.name,
           role_id : req.session.user_id,
-          ppic : req.session.pic
+          ppic : req.session.pic,
+          yearbookLabel : label
 
 
      });
