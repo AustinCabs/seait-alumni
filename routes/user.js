@@ -131,7 +131,7 @@ router.put('/yearbookpic/:id',upload2,async(req,res) => {
                 if (newYearbook) {
                      
                     const  newYearbookPic = await sequelize.query(`insert into yearbook_pics (pic_path,	yearbook_id,fullname,created_by,is_img_path) values 
-                    ('${nameFile}',${newYearbook[0]},'${q[0].fname} ${manme} ${q[0].lname}',${req.params.id},1)`, { type: QueryTypes.INSERT });
+                    ('${nameFile}',${newYearbook[0]},'${q[0].fname} ${mname} ${q[0].lname}',${req.params.id},1)`, { type: QueryTypes.INSERT });
                 }
              }
 
