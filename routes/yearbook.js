@@ -158,7 +158,7 @@ router.get('/manage-yearbook-detail/:id', async(req,res) => {
          // let counter = 0 ;
          data1.forEach(e => {
             
-           let img = `/yearbook-img/${e.pic_path}`
+           let img =  (e.is_img_path) ?  `/img/${e.pic_path}`:  `/yearbook-img/${e.pic_path}`
            let name   = e.fullname
            let yearbook_id = e.yearbook_id
            let yearbook_pics = e.yearbook_pics
